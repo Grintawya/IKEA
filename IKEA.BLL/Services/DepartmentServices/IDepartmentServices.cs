@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IKEA.BLL.Services.DepartmentServices
 {
-    internal interface IDepartmentServices
+    public interface IDepartmentServices
     {
         IEnumerable<DepartmentDto> GetAllDepartments();
         DepartmnetDetailsDto? GetDepartmentById(int id);

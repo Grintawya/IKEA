@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IKEA.BLL.Services.DepartmentServices
 {
-    internal class DepartmentServices : IDepartmentServices
+    public class DepartmentServices : IDepartmentServices
     {
         private IDepartmentRepository Repository;
 
@@ -95,10 +95,8 @@ namespace IKEA.BLL.Services.DepartmentServices
 
         public bool DeleteDepartment(int id)
         {
+
             var department = Repository.GetById(id);
-
-            int result;
-
             if (department is not null)
                 return Repository.Delete(department) > 0;
             else
