@@ -44,11 +44,11 @@ namespace IKEA.BLL.Services.DepartmentServices
             //}
             //return departmentDtos;
         }
-        public DepartmnetDetailsDto GetDepartmentById(int id)
+        public DepartmentDetailsDto GetDepartmentById(int id)
         {
             var Department = Repository.GetById(id);
             if (Department is not null) 
-                return new DepartmnetDetailsDto()
+                return new DepartmentDetailsDto()
                 {
                     Id = Department.Id,
                     Name = Department.Name,
