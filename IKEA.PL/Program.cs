@@ -1,3 +1,4 @@
+using IKEA.BLL.Services.DepartmentServices;
 using IKEA.DAL.Persistance.Data;
 using IKEA.DAL.Persistance.Repositories.Departments;
 using Microsoft.EntityFrameworkCore;
@@ -21,16 +22,7 @@ namespace IKEA.PL
             });
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-
-            //builder.Services.AddScoped<ApplicationDbContext>();
-            //builder.Services.AddScoped<DbContextOptionsBuilder<ApplicationDbContext>>((service) =>
-            //{
-            //    var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            //    optionsBuilder.UseSqlServer("Server = . ; Database = IKEA ; Trusted_Connection = true ; TrustServerCertificate = true");
-            //    var options = optionsBuilder.Options;
-
-            //    return options;
-            //});
+            builder.Services.AddScoped<IDepartmentServices , DepartmentServices>();
 
             #endregion
 
