@@ -26,10 +26,11 @@ namespace IKEA.PL.Controllers
         }
         #endregion
 
+        #region Details
         [HttpGet]
         public IActionResult Details(int? id)
         {
-            if(id is null)
+            if (id is null)
                 return BadRequest();
 
             var department = departmentServices.GetDepartmentById(id.Value);
@@ -39,6 +40,9 @@ namespace IKEA.PL.Controllers
             return View(department);
         }
 
+        #endregion
+
+        #region Create
         [HttpGet]
         public IActionResult Create()
         {
@@ -51,15 +55,15 @@ namespace IKEA.PL.Controllers
             if (!ModelState.IsValid)
                 return View(departmentDto);
 
-            
+
             var Massage = string.Empty;
 
             try
             {
                 var Result = departmentServices.CreateDepartment(departmentDto);
 
-                if (Result >  0)
-                return RedirectToAction(nameof(Index));
+                if (Result > 0)
+                    return RedirectToAction(nameof(Index));
                 else
                 {
                     Massage = "Department Is Not Created";
@@ -67,9 +71,10 @@ namespace IKEA.PL.Controllers
                     return View(departmentDto);
                 }
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                logger.LogError(ex , ex.Message);
+                logger.LogError(ex, ex.Message);
 
                 if (environment.IsDevelopment())
                 {
@@ -84,9 +89,67 @@ namespace IKEA.PL.Controllers
                     return View(departmentDto);
                 }
             }
-            
+
         }
-         
-        
+
+        #endregion
+
+        #region Update
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+
+            if (id is null)
+                return BadRequest();
+
+            var Department = departmentServices.GetDepartmentById(id.Value);
+
+            if (Department is null)
+                return NotFound();
+
+            var MappedDepartment = new UpdatedDepartmentDto()
+            {
+                Id = Department.Id,
+                Name = Department.Name,
+                Code = Department.Code,
+                CreationDate = Department.CreationDate,
+                Description = Department.Description,
+            };
+
+            return View(MappedDepartment);
+
+        } 
+
+        [HttpPost]
+        public IActionResult Edit(UpdatedDepartmentDto departmentDto)
+        {
+            if(!ModelState.IsValid)
+                return View(departmentDto);
+
+            var Massage = string.Empty;
+            try
+            {
+                var Result = departmentServices.UpdateDepartment(departmentDto);
+
+                if (Result > 0)
+                    return RedirectToAction(nameof(Index));
+                else
+                    Massage = "Department is not found";
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex,ex.Message);
+                
+                Massage = environment.IsDevelopment() ? ex.Message : "An error has been occured during update the Department";
+            }
+
+            ModelState.AddModelError(string.Empty, Massage);
+            return View(departmentDto);
+        }
+
+        #endregion
+
+
+
     }
 }
