@@ -10,12 +10,15 @@ namespace IKEA.PL.Controllers
         private readonly ILogger<DepartmentController> logger;
         private readonly IWebHostEnvironment environment;
 
-        public DepartmentController(IDepartmentServices _departmentServices , ILogger<DepartmentController> _logger , IWebHostEnvironment environment)
+        #region Servises
+        public DepartmentController(IDepartmentServices _departmentServices, ILogger<DepartmentController> _logger, IWebHostEnvironment environment)
         {
             departmentServices = _departmentServices;
             logger = _logger;
             this.environment = environment;
-        }
+        } 
+        #endregion
+
         #region Index
 
         [HttpGet]
@@ -149,7 +152,49 @@ namespace IKEA.PL.Controllers
 
         #endregion
 
+        #region Delete
 
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var Department = departmentServices.GetDepartmentById(id.Value);
+
+            if (Department == null)
+                return NotFound();
+
+            return View(Department);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int DeptId )
+        {
+            var Massage = string.Empty ;
+            try
+            {
+                var IsDeleted = departmentServices.DeleteDepartment(DeptId);
+                if (IsDeleted)
+                    return RedirectToAction(nameof(Index));
+
+                Massage = "Department is not Deleted";
+
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+
+                Massage = environment.IsDevelopment() ? ex.Message : "An error has been occured during Delete the Department";
+            }
+
+            ModelState.AddModelError(string.Empty , Massage);
+            return RedirectToAction(nameof(Delete), new {id = DeptId });
+
+
+        }
+
+        #endregion
 
     }
 }
