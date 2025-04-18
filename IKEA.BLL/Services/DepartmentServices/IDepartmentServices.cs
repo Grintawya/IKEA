@@ -11,7 +11,7 @@ namespace IKEA.BLL.Services.DepartmentServices
     public interface IDepartmentServices
     {
         IEnumerable<DepartmentDto> GetAllDepartments();
-        DepartmnetDetailsDto? GetDepartmentById(int id);
+        DepartmentDetailsDto? GetDepartmentById(int id);
         int CreateDepartment(CreatedDepartmentDto departmentDto);
         int UpdateDepartment(UpdatedDepartmentDto departmentDto);
         bool DeleteDepartment(int id);
